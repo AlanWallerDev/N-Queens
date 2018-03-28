@@ -11,26 +11,26 @@ public class MainActivity extends AppCompatActivity {
 
     public static int BOARD_SIZE = 5;
     public static final String TAG = "Main Activity";
+    public static BoardState currentState = new BoardState();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BoardState boardState = new BoardState();
-        boardState.setBoard(BoardUtils.boardInit(BOARD_SIZE));
-        boolean isValid = BoardUtils.isValid(1, 2, boardState.getBoard());
+        currentState.setBoard(BoardUtils.boardInit(BOARD_SIZE));
+        boolean isValid = BoardUtils.isValid(1, 2, currentState.getBoard());
         Log.d(TAG, "Position validity: " + isValid);
-        boardState.placeQueen(1, 2);
-        Log.d(TAG, "Current Board: \n" + twoDimArrayToString(boardState.getBoard()));
-        isValid = BoardUtils.isValid(2, 4, boardState.getBoard());
+        currentState.placeQueen(1, 2);
+        Log.d(TAG, "Current Board: \n" + twoDimArrayToString(currentState.getBoard()));
+        isValid = BoardUtils.isValid(2, 4, currentState.getBoard());
         Log.d(TAG, "Position validity of [2][4]: " + isValid);
-        boardState.placeQueen(2, 4);
-        Log.d(TAG, "Current Board: \n" + twoDimArrayToString(boardState.getBoard()));
-        isValid = BoardUtils.isValid(3, 3, boardState.getBoard());
+        currentState.placeQueen(2, 4);
+        Log.d(TAG, "Current Board: \n" + twoDimArrayToString(currentState.getBoard()));
+        isValid = BoardUtils.isValid(3, 3, currentState.getBoard());
         Log.d(TAG, "Position validity of [3][3]: " + isValid);
-        boardState.placeQueen(3, 3);
-        Log.d(TAG, "Current Board: \n" + twoDimArrayToString(boardState.getBoard()));
+        currentState.placeQueen(3, 3);
+        Log.d(TAG, "Current Board: \n" + twoDimArrayToString(currentState.getBoard()));
 
     }
 
