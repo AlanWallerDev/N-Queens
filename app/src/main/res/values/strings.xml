@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">N-Queens Problem</string>
+    <integer-array name="board_size_array">
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>15</item>
+    </integer-array>
 </resources>
