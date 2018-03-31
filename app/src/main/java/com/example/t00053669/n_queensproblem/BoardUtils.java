@@ -52,11 +52,8 @@ public class BoardUtils {
                 rowCheck++;
                 colCheck--;
             }
-
-        Log.d(TAG, "Row: " + row + ", Column: " + column);
         rowCheck = row - 1;
         colCheck = column - 1;
-        Log.d(TAG, "rowCheck: " + rowCheck + ", colCheck: " + colCheck);
         //check down and to the left diagonal
 
             while (rowCheck >= 0 && colCheck >= 0) {
@@ -74,7 +71,6 @@ public class BoardUtils {
             while (rowCheck >= 0 && colCheck < board.length) {
                 if (board[rowCheck][colCheck] == 1)
                     return false;
-                Log.d(TAG, "yup");
                 rowCheck--;
                 colCheck++;
             }
