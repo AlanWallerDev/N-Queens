@@ -1,5 +1,6 @@
 package com.example.t00053669.n_queensproblem;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public static int BOARD_SIZE = 16;
     public static final String TAG = "Main Activity";
     public static BoardState currentState = new BoardState();
+    public boolean solvable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,19 +35,25 @@ public class MainActivity extends AppCompatActivity {
                 int input = Integer.parseInt(bsView.getText().toString());
                 if(input < 4) {
                     Toast.makeText(MainActivity.this, "Minimum Board Size is 4", Toast.LENGTH_SHORT).show();
-                }
-                else if(input > 24) {
-                    Toast.makeText(MainActivity.this, "Maximum Board Size is 24", Toast.LENGTH_SHORT).show();
                 }else {
                     BOARD_SIZE = Integer.parseInt(bsView.getText().toString());
 
                     currentState.setBoard(BoardUtils.boardInit(BOARD_SIZE));
-                    if (solve(0) == false) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            solvable = solve(0);//TODO: Figure out how to get this to work (UI Thread Communication)
+
+                        }
+                    });
+
+                    if (solvable) {
                         solutionView.setText("No Solution Found");
                     } else {
                         solutionView.setText("Solution Found! \n" + twoDimArrayToString(currentState.getBoard()));
                     }
                     currentState.setBoard(BoardUtils.boardInit(BOARD_SIZE));
+
                 }
             }
         });
@@ -84,5 +92,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
+
+
 
 }
