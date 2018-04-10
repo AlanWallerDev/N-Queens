@@ -1,5 +1,6 @@
 package com.example.t00053669.n_queensproblem;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,11 +31,12 @@ public class MainActivity extends AppCompatActivity {
         solutionView = (TextView) findViewById(R.id.solutionView);
         final EditText bsView = (EditText) findViewById(R.id.boardSizeView);
         Button solutionButton = (Button) findViewById(R.id.bsButton);
+        solutionView.setHorizontallyScrolling(true);
 
         solutionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final WorkerThread thread = new WorkerThread();
+                final WorkerThread thread = new WorkerThread(MainActivity.this);
                 thread.execute(Integer.parseInt(bsView.getText().toString()));
                 /*int input = Integer.parseInt(bsView.getText().toString());
                 if (input < 4) {
@@ -97,10 +99,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class WorkerThread extends AsyncTask<Integer, Void, Boolean> {
+        private ProgressDialog dialog;
+        public WorkerThread(MainActivity activity){
+            dialog = new ProgressDialog(activity);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setMessage("Processing...");
+            dialog.show();
+        }
 
         @Override
         protected void onPostExecute(Boolean b) {
             super.onPostExecute(b);
+            dialog.dismiss();
             Log.d(TAG, "Done!");
             if(b){
                 solutionView.setText("Solution Found for " + BOARD_SIZE + "! \n" + twoDimArrayToString(currentState.getBoard()));
