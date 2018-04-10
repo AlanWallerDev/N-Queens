@@ -21,22 +21,26 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "Main Activity";
     public static BoardState currentState = new BoardState();
     public boolean solvable = false;
+    public static TextView solutionView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final TextView solutionView = (TextView) findViewById(R.id.solutionView);
+        solutionView = (TextView) findViewById(R.id.solutionView);
         final EditText bsView = (EditText) findViewById(R.id.boardSizeView);
         Button solutionButton = (Button) findViewById(R.id.bsButton);
+
         solutionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int input = Integer.parseInt(bsView.getText().toString());
-                if(input < 4) {
+                final WorkerThread thread = new WorkerThread();
+                thread.execute(Integer.parseInt(bsView.getText().toString()));
+                /*int input = Integer.parseInt(bsView.getText().toString());
+                if (input < 4) {
                     Toast.makeText(MainActivity.this, "Minimum Board Size is 4", Toast.LENGTH_SHORT).show();
-                }else {
-                    BOARD_SIZE = Integer.parseInt(bsView.getText().toString());
+                } else {
+                    BOARD_SIZE = ;
 
                     currentState.setBoard(BoardUtils.boardInit(BOARD_SIZE));
                     new Thread(new Runnable() {
@@ -50,19 +54,18 @@ public class MainActivity extends AppCompatActivity {
                     if (solvable) {
                         solutionView.setText("No Solution Found");
                     } else {
-                        solutionView.setText("Solution Found! \n" + twoDimArrayToString(currentState.getBoard()));
+
                     }
                     currentState.setBoard(BoardUtils.boardInit(BOARD_SIZE));
 
-                }
+                }*/
             }
         });
 
 
-
     }
 
-    public static String twoDimArrayToString(int[][] array){
+    public static String twoDimArrayToString(int[][] array) {
         StringJoiner sj = new StringJoiner(System.lineSeparator());
         for (int[] row : array) {
             sj.add(Arrays.toString(row));
@@ -71,16 +74,16 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    public boolean solve( int col){
-        if(col >= BOARD_SIZE){
+    public boolean solve(int col) {
+        if (col >= BOARD_SIZE) {
             //this means it has been solved
             return true;
         }
-        for(int i = 0; i < BOARD_SIZE;i++){
+        for (int i = 0; i < BOARD_SIZE; i++) {
 
-            if(BoardUtils.isValid(col, i, currentState.getBoard())){
+            if (BoardUtils.isValid(col, i, currentState.getBoard())) {
                 currentState.placeQueen(col, i);
-                if(solve( col + 1) == true){
+                if (solve(col + 1) == true) {
                     return true;
                 }
                 //if that didnt work backtrack
@@ -93,6 +96,29 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    private class WorkerThread extends AsyncTask<Integer, Void, Boolean> {
 
+        @Override
+        protected void onPostExecute(Boolean b) {
+            super.onPostExecute(b);
+            Log.d(TAG, "Done!");
+            if(b){
+                solutionView.setText("Solution Found for " + BOARD_SIZE + "! \n" + twoDimArrayToString(currentState.getBoard()));
+            }else{
+                Toast.makeText(MainActivity.this, "Minimum Board Size is 4", Toast.LENGTH_SHORT).show();
+            }
+            currentState.setBoard(BoardUtils.boardInit(BOARD_SIZE));
+        }
 
+        @Override
+        protected Boolean doInBackground(Integer... integers) {
+            if(integers[0] < 4)
+                return false;
+            BOARD_SIZE = integers[0];
+            currentState.setBoard(BoardUtils.boardInit(BOARD_SIZE));
+            boolean result = solve(0);
+
+            return result;
+        }
+    }
 }
