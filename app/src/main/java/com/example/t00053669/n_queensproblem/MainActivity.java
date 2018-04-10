@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             dialog.dismiss();
             Log.d(TAG, "Done!");
             if(b){
-                solutionView.setText("Solution Found for " + BOARD_SIZE + "! \n" + twoDimArrayToString(currentState.getBoard()));
+                solutionView.setText(BOARD_SIZE + "\n" + twoDimArrayToString(currentState.getBoard()));
             }else{
                 Toast.makeText(MainActivity.this, "Minimum Board Size is 4", Toast.LENGTH_SHORT).show();
             }
