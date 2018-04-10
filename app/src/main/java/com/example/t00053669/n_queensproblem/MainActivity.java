@@ -38,29 +38,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final WorkerThread thread = new WorkerThread(MainActivity.this);
                 thread.execute(Integer.parseInt(bsView.getText().toString()));
-                /*int input = Integer.parseInt(bsView.getText().toString());
-                if (input < 4) {
-                    Toast.makeText(MainActivity.this, "Minimum Board Size is 4", Toast.LENGTH_SHORT).show();
-                } else {
-                    BOARD_SIZE = ;
 
-                    currentState.setBoard(BoardUtils.boardInit(BOARD_SIZE));
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            solvable = solve(0);//TODO: Figure out how to get this to work (UI Thread Communication)
-
-                        }
-                    });
-
-                    if (solvable) {
-                        solutionView.setText("No Solution Found");
-                    } else {
-
-                    }
-                    currentState.setBoard(BoardUtils.boardInit(BOARD_SIZE));
-
-                }*/
             }
         });
 
@@ -76,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    public boolean solve(int col) {
+    public boolean solve() {
+        int col = 0;
         if (col >= BOARD_SIZE) {
             //this means it has been solved
             return true;
@@ -107,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog.setMessage("Processing...");
+            dialog.setMessage("Processing, this could take a while...");
             dialog.show();
         }
 
@@ -130,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             BOARD_SIZE = integers[0];
             currentState.setBoard(BoardUtils.boardInit(BOARD_SIZE));
-            boolean result = solve(0);
+            boolean result = solve();
 
             return result;
         }
