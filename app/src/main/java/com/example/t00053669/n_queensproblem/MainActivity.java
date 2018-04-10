@@ -54,8 +54,7 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    public boolean solve() {
-        int col = 0;
+    public boolean solve(int col) {
         if (col >= BOARD_SIZE) {
             //this means it has been solved
             return true;
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             BOARD_SIZE = integers[0];
             currentState.setBoard(BoardUtils.boardInit(BOARD_SIZE));
-            boolean result = solve();
+            boolean result = solve(0);
 
             return result;
         }
