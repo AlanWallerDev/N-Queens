@@ -8,7 +8,7 @@ import android.util.Log;
 
 public class BoardUtils {
 
-    public static final String TAG = "BoardState";
+    public static final String TAG = "BoardUtils";
 
     public BoardUtils() {
     }
