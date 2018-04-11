@@ -18,10 +18,12 @@ import java.util.StringJoiner;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static int BOARD_SIZE = 16;
+    public static int BOARD_SIZE = 0;
+    //for debugging
     public static final String TAG = "Main Activity";
+    //holds the current state of the board (note: could just be a 2d array, i originally planned to have more information stored in this object
+    //but that ended up being unnecessary
     public static BoardState currentState = new BoardState();
-    public boolean solvable = false;
     public static TextView solutionView;
 
     @Override
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText bsView = (EditText) findViewById(R.id.boardSizeView);
         Button solutionButton = (Button) findViewById(R.id.bsButton);
         solutionView.setHorizontallyScrolling(true);
+
 
         solutionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
+    //utility function to print the board as a string
     public static String twoDimArrayToString(int[][] array) {
         StringJoiner sj = new StringJoiner(System.lineSeparator());
         for (int[] row : array) {
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean solve(int col) {
+
         if (col >= BOARD_SIZE) {
             //this means it has been solved
             return true;
@@ -75,7 +79,8 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
-
+    //the following class allows the solve function to run outside the UI thread, preventing the phone from freezing
+    //this also displays the progress dialogue
     private class WorkerThread extends AsyncTask<Integer, Void, Boolean> {
         private ProgressDialog dialog;
         public WorkerThread(MainActivity activity){

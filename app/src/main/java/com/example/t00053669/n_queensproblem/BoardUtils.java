@@ -12,7 +12,7 @@ public class BoardUtils {
 
     public BoardUtils() {
     }
-
+    //creates a 2d array populated with 0's
     public static int[][] boardInit(int n){
         int[][] board = new int[n][n];
         for(int i = 0; i < board.length; i++)
@@ -21,8 +21,9 @@ public class BoardUtils {
 
         return board;
     }
-
+    //checks if the given column and row is a valid location to place a queen
     public static boolean isValid(int column, int row, int[][] board){
+        //checks for straight line collisions in column and row
         for (int i=0; i < board.length; i++){
             if(board[row][i] == 1){
                 return false;
@@ -77,4 +78,5 @@ public class BoardUtils {
 
         return true;
     }
+
 }
